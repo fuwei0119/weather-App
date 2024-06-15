@@ -46,9 +46,21 @@ const App = () => {
   };
 
   return (
-    <div className="app" style={{ backgroundImage: `url(${background})` }}>
-      <SearchBar onSearch={handleSearch} />
-      <WeatherDisplay weatherData={weatherData} cityName={cityName} />
+    <div className="app">
+      <header>
+        <h1>Weather App</h1>
+        <p>Enter a location or ZIP code to check the current weather conditions.</p>
+        <SearchBar onSearch={handleSearch} />
+      </header>
+      <main style={{ backgroundImage: `url(${background})` }}>
+        {weatherData && (
+          <WeatherDisplay
+            weatherData={weatherData}
+            cityName={cityName}
+            updateBackground={updateBackground} // Pass updateBackground function to WeatherDisplay
+          />
+        )}
+      </main>
     </div>
   );
 };
