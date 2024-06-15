@@ -2,6 +2,16 @@
 
 This is a weather application that allows users to search for weather conditions based on their location or city name. The application dynamically updates its background and icons according to the current weather conditions.
 
+## Project Deployment
+
+The project has been successfully deployed. You can access it using the following link:
+
+[https://main.d79ksrgro09rm.amplifyapp.com/](https://main.d79ksrgro09rm.amplifyapp.com/)
+
+Alternatively, you can copy and paste the link below into your browser's address bar:
+
+https://main.d79ksrgro09rm.amplifyapp.com/
+
 ## Running the Application
 
 To run this application locally, follow these steps:
