@@ -1,7 +1,6 @@
 import axios from 'axios';
 
 // Function to fetch city name by ZIP code using Zippopotam.us API
-// Function to fetch city name by ZIP code using Zippopotam.us API
 export const fetchCityNameByZipCode = async (zipCode) => {
   const url = `https://api.zippopotam.us/au/${zipCode}`;
 
@@ -27,12 +26,32 @@ export const fetchCityNameByZipCode = async (zipCode) => {
 // Function to fetch weather data by city name
 export const fetchWeatherByCityName = async (cityName) => {
   const API_KEY = 'ab4b65d9626a8e136231d74bed57a79b';
-  const BASE_URL = 'https://api.openweathermap.org/data/2.5/weather';
-  const url = `${BASE_URL}?q=${cityName}&appid=${API_KEY}&units=metric`;
+  const BASE_URL_CURRENT = 'https://api.openweathermap.org/data/2.5/weather';
+  const BASE_URL_FORECAST = 'https://api.openweathermap.org/data/2.5/forecast';
+
+  // URL for current weather
+  const currentUrl = `${BASE_URL_CURRENT}?q=${cityName}&appid=${API_KEY}&units=metric`;
+
+  // URL for 7-day forecast (note: OpenWeatherMap provides forecast in 3-hour intervals)
+  const forecastUrl = `${BASE_URL_FORECAST}?q=${cityName}&appid=${API_KEY}&units=metric`;
 
   try {
-    const response = await axios.get(url);
-    return response.data;
+    // Fetch current weather data
+    const currentResponse = await axios.get(currentUrl);
+    const currentWeather = currentResponse.data;
+
+    // Fetch forecast data
+    const forecastResponse = await axios.get(forecastUrl);
+    const forecastWeather = forecastResponse.data;
+
+    // Extract only the next 7 days forecast from the list (assuming each day has multiple intervals)
+    const today = new Date().getDate();
+    const next7DaysForecast = forecastWeather.list.filter(item => {
+      const itemDate = new Date(item.dt * 1000).getDate();
+      return itemDate !== today; // Filter out today's data, if needed
+    }).slice(0, 7); // Take only the next 7 entries
+
+    return { current: currentWeather, forecast: next7DaysForecast };
   } catch (error) {
     throw new Error(`Error fetching weather data: ${error}`);
   }

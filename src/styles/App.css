@@ -16,7 +16,9 @@ body {
   color: #333;
   line-height: 1.6;
 }
-
+.tem {
+  color: #ffffff;
+}
 .container {
   max-width: 960px;
   margin: 0 auto;
@@ -58,6 +60,25 @@ main {
   margin-top: 20px;
 }
 
+.weather-container {
+  color: white;
+  padding: 20px;
+}
+
+.current-weather {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.weather-info {
+  flex: 1; /* Take up remaining space */
+}
+
+.weather-icon {
+  margin-left: 20px; /* Add spacing between weather info and icon */
+}
+
 .weather-card {
   background-color: #fff;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
@@ -88,6 +109,21 @@ main {
   display: flex;
   justify-content: space-between;
   margin-top: 10px;
+}
+
+.forecast-container {
+  display: flex;
+  justify-content: space-between; /* Adjust as needed */
+}
+
+.forecast-item {
+  flex: 1; /* Equal width for each forecast item */
+  text-align: center; /* Center align content */
+  padding: 10px; /* Adjust spacing */
+}
+.separator-line {
+  margin: 20px 0;
+  border: 1px solid rgba(204, 204, 204, 0.5);
 }
 
 @media (max-width: 768px) {

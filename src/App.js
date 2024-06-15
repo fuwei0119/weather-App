@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import SearchBar from './components/SearchBar';
 import WeatherDisplay from './components/WeatherDisplay';
 import { fetchCityNameByZipCode, fetchWeatherByCityName } from './utils/fetchWeather'; // Adjusted import
@@ -8,22 +8,37 @@ import './styles/App.css';
 const App = () => {
   const [weatherData, setWeatherData] = useState(null);
   const [background, setBackground] = useState('');
-  const [cityName, setCityName] = useState('');
+  const [cityName, setCityName] = useState('Adelaide');
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        if (cityName) {
+          const data = await fetchWeatherByCityName(cityName);
+          setWeatherData(data);
+          updateBackground(data.current.weather[0].main);
+        }
+      } catch (error) {
+        console.error('Error fetching weather data:', error);
+      }
+    };
+
+    fetchData(); // Initial fetch when cityName changes
+  }, [cityName]);
 
   const handleSearch = async (location) => {
     try {
       let city;
       if (!isNaN(location)) {
+        // If location is a number (assuming it's a ZIP code)
         city = await fetchCityNameByZipCode(location);
       } else {
+        // Otherwise, treat it as a city name
         city = location;
       }
-      setCityName(city);
-      const data = await fetchWeatherByCityName(location);
-      setWeatherData(data);
-      updateBackground(data.weather[0].main);
+      setCityName(city); // Update cityName state
     } catch (error) {
-      console.error('Error fetching weather data:', error);
+      console.error('Error fetching city name:', error);
     }
   };
 
@@ -55,7 +70,8 @@ const App = () => {
       <main style={{ backgroundImage: `url(${background})` }}>
         {weatherData && (
           <WeatherDisplay
-            weatherData={weatherData}
+            currentWeather={weatherData.current}
+            forecastWeather={weatherData.forecast}
             cityName={cityName}
             updateBackground={updateBackground} // Pass updateBackground function to WeatherDisplay
           />
