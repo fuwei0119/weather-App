@@ -126,14 +126,15 @@ main {
   border: 1px solid rgba(204, 204, 204, 0.5);
 }
 
+/* Mobile Styles */
 @media (max-width: 768px) {
   .container {
     padding: 10px;
   }
 
   .header {
-    padding: 10px;
-    margin-bottom: 10px;
+    padding: 15px; /* Adjusted padding */
+    margin-bottom: 15px; /* Adjusted margin */
   }
 
   .weather-card {
@@ -150,5 +151,13 @@ main {
 
   .weather-icon {
     font-size: 3rem;
+  }
+
+  .forecast-container {
+    flex-direction: column; /* Stack forecast items vertically */
+  }
+
+  .forecast-item {
+    padding: 10px 0; /* Adjust padding for better spacing */
   }
 }
