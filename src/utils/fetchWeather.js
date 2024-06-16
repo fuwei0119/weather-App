@@ -32,7 +32,7 @@ export const fetchWeatherByCityName = async (cityName) => {
   // URL for current weather
   const currentUrl = `${BASE_URL_CURRENT}?q=${cityName}&appid=${API_KEY}&units=metric`;
 
-  // URL for 7-day forecast (note: OpenWeatherMap provides forecast in 3-hour intervals)
+  // URL for forecast
   const forecastUrl = `${BASE_URL_FORECAST}?q=${cityName}&appid=${API_KEY}&units=metric`;
 
   try {
@@ -44,14 +44,14 @@ export const fetchWeatherByCityName = async (cityName) => {
     const forecastResponse = await axios.get(forecastUrl);
     const forecastWeather = forecastResponse.data;
 
-    // Extract only the next 7 days forecast from the list (assuming each day has multiple intervals)
+    // Extract only the forecast from the list (assuming each day has multiple intervals)
     const today = new Date().getDate();
-    const next7DaysForecast = forecastWeather.list.filter(item => {
+    const next21HoursForecast = forecastWeather.list.filter(item => {
       const itemDate = new Date(item.dt * 1000).getDate();
       return itemDate !== today; // Filter out today's data, if needed
     }).slice(0, 7); // Take only the next 7 entries
 
-    return { current: currentWeather, forecast: next7DaysForecast };
+    return { current: currentWeather, forecast: next21HoursForecast };
   } catch (error) {
     throw new Error(`Error fetching weather data: ${error}`);
   }

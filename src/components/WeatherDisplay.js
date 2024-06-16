@@ -5,16 +5,18 @@ const WeatherDisplay = ({ currentWeather, forecastWeather, cityName, updateBackg
   if (!currentWeather || !forecastWeather) return null;
 
   const { weather: currentWeatherData, main: currentMain } = currentWeather;
-  const { temp: currentTemp, humidity: currentHumidity, wind_speed: currentWindSpeed } = currentMain;
+  const { temp: currentTemp, humidity: currentHumidity } = currentMain;
+  const { speed: currentWindSpeed } = currentWeather.wind;
+
   const { main: currentMainWeather, description: currentDescription } = currentWeatherData[0];
 
   const getForecast = () => {
     return forecastWeather.map(item => {
       const date = new Date(item.dt * 1000);
-      const day = date.toLocaleDateString('en-US', { weekday: 'short' });
+      const hour = date.getHours(); // Get the hour of the day (0-23)
       const temp = item.main.temp.toFixed(1);
       const { main, description } = item.weather[0];
-      return { day, temp, main, description };
+      return { hour, temp, main, description };
     });
   };
 
@@ -51,11 +53,11 @@ const WeatherDisplay = ({ currentWeather, forecastWeather, cityName, updateBackg
 
       <hr className="separator-line" />
 
-      <h3>Next 7 Days Forecast:</h3>
+      <h3>Next 21 Hours Forecast:</h3>
       <div className="forecast-container">
-        {getForecast().map((forecast, index) => (
+        {getForecast().slice(0, 21).map((forecast, index) => (
           <div key={index} className="forecast-item">
-            <p>{forecast.day}</p>
+            <h3>{forecast.hour}:00</h3>
             <p>{forecast.temp}°C</p>
             <p>{forecast.description}</p>
           </div>
@@ -64,6 +66,5 @@ const WeatherDisplay = ({ currentWeather, forecastWeather, cityName, updateBackg
     </div>
   );
 };
-
 
 export default WeatherDisplay;
